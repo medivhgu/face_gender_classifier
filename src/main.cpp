@@ -2,7 +2,7 @@
 #include <string>
 #include <cstdlib>
 
-#include "face_gender_classifier.cpp"
+#include "face_gender_classifier.hpp"
 
 using namespace std;
 

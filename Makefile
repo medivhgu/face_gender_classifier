@@ -14,7 +14,7 @@ DIR_BIN=./bin
 DIR_LIB=./lib
 LDFLAG:=#-Wl
 INCLUDE=-I$(DIR_INC) -I$(CUDA_DIR)/include -I$(OPENBLAS_DIR)/include -I$(PROTOBUF_DIR)/include -I$(CAFFE_DIR)/include
-LIBS=-L$(DIR_LIB) -L$(CUDA_DIR)/lib64 -L$(OPENBLAS_DIR)/lib -L$(PROTOBUF_DIR)/lib -L$(CAFFE_DIR)/build/lib -L$(OPENCV_LIBS) -lcudart -lcublas -lcurand -Wl,--whole-archive -lcaffe -Wl,--no-whole-archive -lopencv_highgui -lopencv_core -lopencv_imgproc -lopencv_features2d -lopencv_objdetect -lglog -lprotobuf -lhdf5 -lhdf5_hl -llmdb -lleveldb -lopenblas -lboost_thread
+LIBS=-L$(DIR_LIB) -L$(OPENBLAS_DIR)/lib -L$(PROTOBUF_DIR)/lib -L$(CAFFE_DIR)/build/lib -Wl,--whole-archive -lcaffe -Wl,--no-whole-archive -lopencv_highgui -lopencv_core -lopencv_imgproc -lopencv_features2d -lopencv_objdetect -lglog -lprotobuf -lhdf5 -lhdf5_hl -llmdb -lleveldb -lopenblas -lboost_thread
 
 SOCROP=lib/libface_gender_classifier.so # DO NOT CHANGE THR LIB NAME
 COBJS=$(DIR_OBJ)/face_gender_classifier.o
@@ -26,14 +26,14 @@ MAIN=$(DIR_BIN)/main.bin
 all: $(MAIN)
 
 $(MAIN):$(SOCROP) $(MAINOBJ)
-		$(GXX) $(CXXFLAG) $(LDFLAG) -o $@ $(SOCROP) $(MAINOBJ) $(LIBS)
+	$(GXX) $(CXXFLAG) $(LDFLAG) -o $@ $(SOCROP) $(MAINOBJ) $(LIBS)
 
 $(SOCROP):$(COBJS)
-	  $(GXX) -shared -fPIC $(CXXFLAG) $(LDFLAG) -o $@ $(COBJS) $(LIBS)
+	$(GXX) -shared -fPIC $(CXXFLAG) $(LDFLAG) -o $@ $(COBJS) $(LIBS)
 
 $(DIR_OBJ)/%.o:$(DIR_SRC)/%.cpp
-	  $(GXX) -fPIC -o $@ -c $< $(CXXFLAG) $(INCLUDE) $(DEF)
+	$(GXX) -fPIC -o $@ -c $< $(CXXFLAG) $(INCLUDE) $(DEF)
 
 clean:
-	  rm -rf $(DIR_OBJ)/*.o  $(SOCROP) $(MAIN)
+	rm -rf $(DIR_OBJ)/*.o  $(SOCROP) $(MAIN)
 
